@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevLearn Pro - Free Web Development Courses | Learn HTML, CSS, JavaScript, React, Node.js, MongoDB</title>
+    <meta name="description" content="Learn web development for free with our comprehensive courses. Master HTML, CSS, JavaScript, React, Node.js, and MongoDB. Get certificates and apply for internships.">
+    <meta name="keywords" content="web development, HTML, CSS, JavaScript, React, Node.js, MongoDB, free courses, programming, certificates, internships">
+    <meta name="author" content="DevLearn Pro">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .progress-bar {
+            height: 8px;
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        .course-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border: 1px solid #e2e8f0;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #3730a3 0%, #5b21b6 100%);
+            transform: translateY(-1px);
+        }
+        .sidebar {
+            transition: transform 0.3s ease;
+        }
+        .sidebar.hidden {
+            transform: translateX(-100%);
+        }
+        .modal {
+            backdrop-filter: blur(10px);
+        }
+        .certificate-template {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 3px solid #6366f1;
+            font-family: 'Times New Roman', serif;
+        }
+        .lesson-content {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-graduation-cap text-2xl text-indigo-600"></i>
+                    <h1 class="text-2xl font-bold text-gray-800">DevLearn Pro</h1>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#" onclick="showSection('home')" class="text-gray-700 hover:text-indigo-600 transition">Home</a>
+                    <a href="#" onclick="showSection('courses')" class="text-gray-700 hover:text-indigo-600 transition">Courses</a>
+                    <a href="#" onclick="showSection('internships')" class="text-gray-700 hover:text-indigo-600 transition">Internships</a>
+                    <a href="#" onclick="showSection('about')" class="text-gray-700 hover:text-indigo-600 transition">About</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div id="authButtons" class="flex space-x-2">
+                        <button onclick="showLoginModal()" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition">Login</button>
+                        <button onclick="showSignupModal()" class="btn-primary text-white px-4 py-2 rounded-lg">Sign Up</button>
+                    </div>
+                    <div id="userMenu" class="hidden relative">
+                        <button onclick="toggleUserDropdown()" class="flex items-center space-x-2 bg-gray-200 px-4 py-2 rounded-lg hover:bg-gray-300 transition">
+                            <i class="fas fa-user"></i>
+                            <span id="userName"></span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2">
+                            <a href="#" onclick="showSection('dashboard')" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Dashboard</a>
+                            <a href="#" onclick="showSection('profile')" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Profile</a>
+                            <button onclick="logout()" class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">Logout</button>
+                        </div>
+                    </div>
+                    <button onclick="toggleMobileMenu()" class="md:hidden">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-white shadow-lg">
+        <div class="px-4 py-2 space-y-2">
+            <a href="#" onclick="showSection('home')" class="block text-gray-700 hover:text-indigo-600 transition">Home</a>
+            <a href="#" onclick="showSection('courses')" class="block text-gray-700 hover:text-indigo-600 transition">Courses</a>
+            <a href="#" onclick="showSection('internships')" class="block text-gray-700 hover:text-indigo-600 transition">Internships</a>
+            <a href="#" onclick="showSection('about')" class="block text-gray-700 hover:text-indigo-600 transition">About</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Home Section -->
+        <section id="homeSection" class="mb-16">
+            <!-- Hero Section -->
+            <div class="gradient-bg text-white py-20 rounded-2xl mb-16">
+                <div class="text-center">
+                    <h2 class="text-5xl font-bold mb-6">Master Web Development</h2>
+                    <p class="text-xl mb-8 max-w-2xl mx-auto">Learn HTML, CSS, JavaScript, React, Node.js, and MongoDB through comprehensive courses. Get certified and land your dream internship.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="showSection('courses')" class="bg-white text-indigo-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">Explore Courses</button>
+                        <button onclick="showSignupModal()" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-indigo-600 transition">Get Started Free</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="text-center p-6 bg-white rounded-xl shadow-lg card-hover">
+                    <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-graduation-cap text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Free Courses</h3>
+                    <p class="text-gray-600">Access all courses completely free with no hidden costs</p>
+                </div>
+                <div class="text-center p-6 bg-white rounded-xl shadow-lg card-hover">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-certificate text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Certificates</h3>
+                    <p class="text-gray-600">Earn industry-recognized certificates upon completion</p>
+                </div>
+                <div class="text-center p-6 bg-white rounded-xl shadow-lg card-hover">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-briefcase text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Internships</h3>
+                    <p class="text-gray-600">Apply for free internships after completing courses</p>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="bg-white rounded-xl shadow-lg p-8 mb-16">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                    <div>
+                        <div class="text-3xl font-bold text-indigo-600 mb-2">10,000+</div>
+                        <div class="text-gray-600">Students</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold text-green-600 mb-2">6</div>
+                        <div class="text-gray-600">Courses</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold text-purple-600 mb-2">5,000+</div>
+                        <div class="text-gray-600">Certificates</div>
+                    </div>
+                    <div>
+                        <div class="text-3xl font-bold text-orange-600 mb-2">200+</div>
+                        <div class="text-gray-600">Internships</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Courses Section -->
+        <section id="coursesSection" class="hidden">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Our Courses</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Master modern web development technologies with our comprehensive, hands-on courses</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="courseGrid">
+                <!-- Courses will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Course Detail Section -->
+        <section id="courseDetailSection" class="hidden">
+            <div id="courseDetailContent">
+                <!-- Course detail content will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboardSection" class="hidden">
+            <div class="mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Student Dashboard</h2>
+                <div class="bg-white rounded-xl shadow-lg p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800">Welcome back, <span id="dashboardUserName"></span>!</h3>
+                            <p class="text-gray-600">Continue your learning journey</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-indigo-600" id="totalProgress">0%</div>
+                            <div class="text-sm text-gray-600">Overall Progress</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Chart -->
+                    <div class="mb-6">
+                        <canvas id="progressChart" style="height: 300px;"></canvas>
+                    </div>
+                    
+                    <!-- Enrolled Courses -->
+                    <div class="mb-6">
+                        <h4 class="text-lg font-semibold mb-4">My Courses</h4>
+                        <div id="enrolledCourses" class="space-y-4">
+                            <!-- Enrolled courses will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Certificates -->
+                    <div>
+                        <h4 class="text-lg font-semibold mb-4">My Certificates</h4>
+                        <div id="userCertificates" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <!-- Certificates will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Internships Section -->
+        <section id="internshipsSection" class="hidden">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Internship Opportunities</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">Apply for free internships after completing at least one course</p>
+            </div>
+            
+            <div id="internshipEligibility" class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8 hidden">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-yellow-700">
+                            You need to complete at least one course to be eligible for internships.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8" id="internshipGrid">
+                <!-- Internships will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="aboutSection" class="hidden">
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">About DevLearn Pro</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Our Mission</h3>
+                        <p class="text-gray-600 mb-6">We believe that quality education should be accessible to everyone. Our mission is to provide comprehensive web development courses that prepare students for successful careers in tech.</p>
+                        
+                        <h3 class="text-xl font-semibold mb-4">What We Offer</h3>
+                        <ul class="space-y-2 text-gray-600">
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Comprehensive video lessons</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Written content and tutorials</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Hands-on assignments</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Industry-recognized certificates</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>Internship opportunities</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Technologies Covered</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-orange-50 p-4 rounded-lg text-center">
+                                <i class="fab fa-html5 text-orange-600 text-3xl mb-2"></i>
+                                <div class="font-semibold">HTML5</div>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-lg text-center">
+                                <i class="fab fa-css3-alt text-blue-600 text-3xl mb-2"></i>
+                                <div class="font-semibold">CSS3</div>
+                            </div>
+                            <div class="bg-yellow-50 p-4 rounded-lg text-center">
+                                <i class="fab fa-js-square text-yellow-600 text-3xl mb-2"></i>
+                                <div class="font-semibold">JavaScript</div>
+                            </div>
+                            <div class="bg-cyan-50 p-4 rounded-lg text-center">
+                                <i class="fab fa-react text-cyan-600 text-3xl mb-2"></i>
+                                <div class="font-semibold">React</div>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg text-center">
+                                <i class="fab fa-node-js text-green-600 text-3xl mb-2"></i>
+                                <div class="font-semibold">Node.js</div>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg text-center">
+                                <i class="fas fa-database text-green-600 text-3xl mb-2"></i>
+                                <div class="font-semibold">MongoDB</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profileSection" class="hidden">
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Profile Settings</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Personal Information</h3>
+                        <form id="profileForm" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                                <input type="text" id="profileName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <input type="email" id="profileEmail" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                                <input type="tel" id="profilePhone" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+                                <textarea id="profileBio" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary text-white px-6 py-2 rounded-lg">Update Profile</button>
+                        </form>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Account Statistics</h3>
+                        <div class="space-y-4">
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <div class="text-sm text-gray-600">Courses Completed</div>
+                                <div class="text-2xl font-bold text-indigo-600" id="completedCoursesCount">0</div>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <div class="text-sm text-gray-600">Certificates Earned</div>
+                                <div class="text-2xl font-bold text-green-600" id="certificatesCount">0</div>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <div class="text-sm text-gray-600">Internship Applications</div>
+                                <div class="text-2xl font-bold text-purple-600" id="internshipApplicationsCount">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Panel -->
+        <section id="adminSection" class="hidden">
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Admin Panel</h2>
+                
+                <!-- Admin Navigation -->
+                <div class="border-b border-gray-200 mb-6">
+                    <nav class="flex space-x-8">
+                        <button onclick="showAdminTab('users')" class="admin-tab-btn active border-b-2 border-indigo-500 text-indigo-600 py-4 px-1">Users</button>
+                        <button onclick="showAdminTab('courses')" class="admin-tab-btn text-gray-500 hover:text-gray-700 py-4 px-1">Courses</button>
+                        <button onclick="showAdminTab('assignments')" class="admin-tab-btn text-gray-500 hover:text-gray-700 py-4 px-1">Assignments</button>
+                        <button onclick="showAdminTab('certificates')" class="admin-tab-btn text-gray-500 hover:text-gray-700 py-4 px-1">Certificates</button>
+                        <button onclick="showAdminTab('internships')" class="admin-tab-btn text-gray-500 hover:text-gray-700 py-4 px-1">Internships</button>
+                    </nav>
+                </div>
+                
+                <!-- Admin Content -->
+                <div id="adminContent">
+                    <!-- Content will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 modal">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6">Login</h3>
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="loginEmail" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="loginPassword" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div class="flex justify-between items-center">
+                    <button type="submit" class="btn-primary text-white px-6 py-2 rounded-lg">Login</button>
+                    <button type="button" onclick="hideLoginModal()" class="text-gray-500 hover:text-gray-700">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 modal">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6">Sign Up</h3>
+            <form id="signupForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <input type="text" id="signupName" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="signupEmail" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="signupPassword" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div class="flex justify-between items-center">
+                    <button type="submit" class="btn-primary text-white px-6 py-2 rounded-lg">Sign Up</button>
+                    <button type="button" onclick="hideSignupModal()" class="text-gray-500 hover:text-gray-700">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Certificate Modal -->
+    <div id="certificateModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 modal">
+        <div class="bg-white rounded-xl p-8 max-w-2xl w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">Certificate</h3>
+                <button onclick="hideCertificateModal()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="certificateContent" class="certificate-template p-8 text-center">
+                <!-- Certificate content will be populated by JavaScript -->
+            </div>
+            <div class="flex justify-center mt-6">
+                <button onclick="downloadCertificate()" class="btn-primary text-white px-6 py-2 rounded-lg">
+                    <i class="fas fa-download mr-2"></i>Download Certificate
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let currentCourse = null;
+        let currentLesson = 0;
+        let progressChart = null;
+
+        // Sample data
+        const courses = [
+            {
+                id: 1,
+                title: 'HTML Fundamentals',
+                description: 'Learn the building blocks of web development with HTML5',
+                duration: '4 weeks',
+                lessons: 12,
+                level: 'Beginner',
+                icon: 'fab fa-html5',
+                color: 'orange',
+                lessons: [
+                    { title: 'Introduction to HTML', type: 'video', content: 'Welcome to HTML fundamentals...', videoUrl: 'https://example.com/video1' },
+                    { title: 'HTML Document Structure', type: 'text', content: 'HTML documents have a specific structure...' },
+                    { title: 'HTML Elements and Tags', type: 'video', content: 'Learn about HTML elements...', videoUrl: 'https://example.com/video2' },
+                    { title: 'HTML Attributes', type: 'text', content: 'Attributes provide additional information...' }
+                ],
+                assignment: {
+                    title: 'Build a Personal Portfolio Page',
+                    description: 'Create a complete HTML page showcasing your personal information, skills, and projects.',
+                    requirements: ['Use semantic HTML5 elements', 'Include navigation menu', 'Add contact form']
+                }
+            },
+            {
+                id: 2,
+                title: 'CSS Styling',
+                description: 'Master CSS for beautiful and responsive web designs',
+                duration: '5 weeks',
+                lessons: 15,
+                level: 'Beginner',
+                icon: 'fab fa-css3-alt',
+                color: 'blue',
+                lessons: [
+                    { title: 'Introduction to CSS', type: 'video', content: 'CSS basics and syntax...', videoUrl: 'https://example.com/video3' },
+                    { title: 'CSS Selectors', type: 'text', content: 'Different types of CSS selectors...' },
+                    { title: 'Box Model', type: 'video', content: 'Understanding the CSS box model...', videoUrl: 'https://example.com/video4' },
+                    { title: 'Flexbox Layout', type: 'text', content: 'Modern layout with Flexbox...' }
+                ],
+                assignment: {
+                    title: 'Responsive Website Design',
+                    description: 'Style your HTML portfolio with modern CSS techniques.',
+                    requirements: ['Use Flexbox for layout', 'Implement responsive design', 'Add animations']
+                }
+            },
+            {
+                id: 3,
+                title: 'JavaScript Programming',
+                description: 'Learn JavaScript for dynamic and interactive web applications',
+                duration: '6 weeks',
+                lessons: 18,
+                level: 'Intermediate',
+                icon: 'fab fa-js-square',
+                color: 'yellow',
+                lessons: [
+                    { title: 'JavaScript Basics', type: 'video', content: 'Variables, functions, and control flow...', videoUrl: 'https://example.com/video5' },
+                    { title: 'DOM Manipulation', type: 'text', content: 'Working with the Document Object Model...' },
+                    { title: 'Event Handling', type: 'video', content: 'Handling user interactions...', videoUrl: 'https://example.com/video6' },
+                    { title: 'Async JavaScript', type: 'text', content: 'Promises and async/await...' }
+                ],
+                assignment: {
+                    title: 'Interactive Web Application',
+                    description: 'Build a dynamic todo list application with JavaScript.',
+                    requirements: ['Add/remove tasks', 'Local storage', 'Form validation']
+                }
+            },
+            {
+                id: 4,
+                title: 'React Development',
+                description: 'Build modern web applications with React',
+                duration: '8 weeks',
+                lessons: 20,
+                level: 'Advanced',
+                icon: 'fab fa-react',
+                color: 'cyan',
+                lessons: [
+                    { title: 'React Fundamentals', type: 'video', content: 'Components and JSX...', videoUrl: 'https://example.com/video7' },
+                    { title: 'State and Props', type: 'text', content: 'Managing component state...' },
+                    { title: 'Hooks', type: 'video', content: 'useState and useEffect...', videoUrl: 'https://example.com/video8' },
+                    { title: 'React Router', type: 'text', content: 'Client-side routing...' }
+                ],
+                assignment: {
+                    title: 'React E-commerce App',
+                    description: 'Build a complete e-commerce application with React.',
+                    requirements: ['Product listing', 'Shopping cart', 'User authentication']
+                }
+            },
+            {
+                id: 5,
+                title: 'Node.js Backend',
+                description: 'Server-side development with Node.js and Express',
+                duration: '7 weeks',
+                lessons: 16,
+                level: 'Advanced',
+                icon: 'fab fa-node-js',
+                color: 'green',
+                lessons: [
+                    { title: 'Node.js Basics', type: 'video', content: 'Server-side JavaScript...', videoUrl: 'https://example.com/video9' },
+                    { title: 'Express Framework', type: 'text', content: 'Building web servers...' },
+                    { title: 'REST APIs', type: 'video', content: 'Creating RESTful services...', videoUrl: 'https://example.com/video10' },
+                    { title: 'Authentication', type: 'text', content: 'User authentication and authorization...' }
+                ],
+                assignment: {
+                    title: 'REST API Server',
+                    description: 'Build a complete REST API for a blog application.',
+                    requirements: ['CRUD operations', 'Authentication', 'Data validation']
+                }
+            },
+            {
+                id: 6,
+                title: 'MongoDB Database',
+                description: 'NoSQL database management with MongoDB',
+                duration: '5 weeks',
+                lessons: 14,
+                level: 'Intermediate',
+                icon: 'fas fa-database',
+                color: 'green',
+                lessons: [
+                    { title: 'MongoDB Basics', type: 'video', content: 'NoSQL database concepts...', videoUrl: 'https://example.com/video11' },
+                    { title: 'CRUD Operations', type: 'text', content: 'Create, Read, Update, Delete...' },
+                    { title: 'Data Modeling', type: 'video', content: 'Designing MongoDB schemas...', videoUrl: 'https://example.com/video12' },
+                    { title: 'Aggregation', type: 'text', content: 'Complex queries and aggregation...' }
+                ],
+                assignment: {
+                    title: 'Database Design Project',
+                    description: 'Design and implement a MongoDB database for a social media platform.',
+                    requirements: ['User profiles', 'Posts and comments', 'Relationships']
+                }
+            }
+        ];
+
+        const internships = [
+            {
+                id: 1,
+                title: 'Frontend Developer Intern',
+                company: 'TechCorp',
+                duration: '3 months',
+                description: 'Work on real-world React applications',
+                requirements: ['HTML/CSS', 'JavaScript', 'React'],
+                type: 'Remote'
+            },
+            {
+                id: 2,
+                title: 'Full Stack Developer Intern',
+                company: 'WebSolutions',
+                duration: '6 months',
+                description: 'Build complete web applications',
+                requirements: ['JavaScript', 'React', 'Node.js', 'MongoDB'],
+                type: 'On-site'
+            },
+            {
+                id: 3,
+                title: 'Backend Developer Intern',
+                company: 'DataTech',
+                duration: '4 months',
+                description: 'Develop scalable backend systems',
+                requirements: ['Node.js', 'MongoDB', 'REST APIs'],
+                type: 'Hybrid'
+            }
+        ];
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserData();
+            renderCourses();
+            renderInternships();
+            setupEventListeners();
+            showSection('home');
+        });
+
+        // Event listeners
+        function setupEventListeners() {
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('signupForm').addEventListener('submit', handleSignup);
+            document.getElementById('profileForm').addEventListener('submit', handleProfileUpdate);
+        }
+
+        // User authentication
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                updateAuthUI();
+                hideLoginModal();
+                showSection('dashboard');
+                showNotification('Login successful!', 'success');
+            } else {
+                showNotification('Invalid credentials', 'error');
+            }
+        }
+
+        function handleSignup(e) {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            if (users.find(u => u.email === email)) {
+                showNotification('Email already exists', 'error');
+                return;
+            }
+            
+            const newUser = {
+                id: Date.now(),
+                name,
+                email,
+                password,
+                role: email === 'admin@devlearn.com' ? 'admin' : 'student',
+                enrolledCourses: [],
+                completedCourses: [],
+                certificates: [],
+                progress: {},
+                internshipApplications: []
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            currentUser = newUser;
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+            updateAuthUI();
+            hideSignupModal();
+            showSection('dashboard');
+            showNotification('Account created successfully!', 'success');
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateAuthUI();
+            showSection('home');
+            showNotification('Logged out successfully', 'success');
+        }
+
+        function loadUserData() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                updateAuthUI();
+            }
+        }
+
+        function updateAuthUI() {
+            const authButtons = document.getElementById('authButtons');
+            const userMenu = document.getElementById('userMenu');
+            const userName = document.getElementById('userName');
+            
+            if (currentUser) {
+                authButtons.classList.add('hidden');
+                userMenu.classList.remove('hidden');
+                userName.textContent = currentUser.name;
+                
+                // Show admin link if user is admin
+                const nav = document.querySelector('nav .hidden.md\\:flex');
+                const adminLink = document.getElementById('adminLink');
+                if (currentUser.role === 'admin' && !adminLink) {
+                    const adminLinkElement = document.createElement('a');
+                    adminLinkElement.id = 'adminLink';
+                    adminLinkElement.href = '#';
+                    adminLinkElement.onclick = () => showSection('admin');
+                    adminLinkElement.className = 'text-gray-700 hover:text-indigo-600 transition';
+                    adminLinkElement.textContent = 'Admin';
+                    nav.appendChild(adminLinkElement);
+                }
+            } else {
+                authButtons.classList.remove('hidden');
+                userMenu.classList.add('hidden');
+            }
+        }
+
+        // Navigation functions
+        function showSection(sectionName) {
+            // Hide all sections
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show selected section
+            const targetSection = document.getElementById(sectionName + 'Section');
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+            
+            // Load section-specific content
+            if (sectionName === 'dashboard' && currentUser) {
+                loadDashboard();
+            } else if (sectionName === 'admin' && currentUser && currentUser.role === 'admin') {
+                loadAdminPanel();
+            } else if (sectionName === 'profile' && currentUser) {
+                loadProfile();
+            } else if (sectionName === 'internships') {
+                checkInternshipEligibility();
+            }
+        }
+
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('hidden');
+        }
+
+        // Course functions
+        function renderCourses() {
+            const courseGrid = document.getElementById('courseGrid');
+            courseGrid.innerHTML = '';
+            
+            courses.forEach(course => {
+                const courseCard = document.createElement('div');
+                courseCard.className = 'course-card rounded-xl p-6 card-hover cursor-pointer';
+                courseCard.onclick = () => showCourseDetail(course.id);
+                
+                courseCard.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-${course.color}-100 rounded-lg flex items-center justify-center">
+                            <i class="${course.icon} text-${course.color}-600 text-xl"></i>
+                        </div>
+                        <span class="bg-${course.color}-100 text-${course.color}-800 text-xs px-2 py-1 rounded-full">${course.level}</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">${course.title}</h3>
+                    <p class="text-gray-600 mb-4">${course.description}</p>
+                    <div class="flex items-center justify-between text-sm text-gray-500">
+                        <span><i class="fas fa-clock mr-1"></i>${course.duration}</span>
+                        <span><i class="fas fa-play mr-1"></i>${course.lessons.length} lessons</span>
+                    </div>
+                `;
+                
+                courseGrid.appendChild(courseCard);
+            });
+        }
+
+        function showCourseDetail(courseId) {
+            const course = courses.find(c => c.id === courseId);
+            if (!course) return;
+            
+            currentCourse = course;
+            currentLesson = 0;
+            
+            const courseDetailContent = document.getElementById('courseDetailContent');
+            courseDetailContent.innerHTML = `
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="gradient-bg text-white p-8">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h2 class="text-3xl font-bold mb-2">${course.title}</h2>
+                                <p class="text-lg opacity-90">${course.description}</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-4xl mb-2">
+                                    <i class="${course.icon}"></i>
+                                </div>
+                                <div class="text-sm opacity-75">${course.level}</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col lg:flex-row">
+                        <!-- Course Content -->
+                        <div class="lg:w-2/3 p-8">
+                            <div class="mb-6">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="text-xl font-semibold">Lesson ${currentLesson + 1}: ${course.lessons[currentLesson].title}</h3>
+                                    <div class="flex space-x-2">
+                                        <button onclick="previousLesson()" ${currentLesson === 0 ? 'disabled' : ''} class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <button onclick="nextLesson()" ${currentLesson === course.lessons.length - 1 ? 'disabled' : ''} class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="lesson-content bg-gray-50 p-6 rounded-lg">
+                                    ${renderLessonContent(course.lessons[currentLesson])}
+                                </div>
+                                
+                                <div class="mt-4 flex justify-between items-center">
+                                    <div class="text-sm text-gray-600">
+                                        Progress: ${currentLesson + 1} / ${course.lessons.length}
+                                    </div>
+                                    <button onclick="markLessonComplete()" class="btn-primary text-white px-4 py-2 rounded-lg">
+                                        <i class="fas fa-check mr-2"></i>Mark Complete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Sidebar -->
+                        <div class="lg:w-1/3 bg-gray-50 p-6">
+                            <div class="mb-6">
+                                <h4 class="font-semibold mb-3">Course Progress</h4>
+                                <div class="bg-gray-200 rounded-full h-2 mb-2">
+                                    <div class="progress-bar h-2 rounded-full" style="width: ${((currentLesson + 1) / course.lessons.length) * 100}%"></div>
+                                </div>
+                                <div class="text-sm text-gray-600">${Math.round(((currentLesson + 1) / course.lessons.length) * 100)}% Complete</div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h4 class="font-semibold mb-3">Lessons</h4>
+                                <div class="space-y-2">
+                                    ${course.lessons.map((lesson, index) => `
+                                        <div onclick="goToLesson(${index})" class="flex items-center p-2 rounded cursor-pointer hover:bg-gray-200 ${index === currentLesson ? 'bg-indigo-100' : ''}">
+                                            <div class="w-6 h-6 rounded-full mr-3 flex items-center justify-center ${index <= currentLesson ? 'bg-indigo-500 text-white' : 'bg-gray-300'}">
+                                                ${index < currentLesson ? '<i class="fas fa-check text-xs"></i>' : index + 1}
+                                            </div>
+                                            <div class="flex-1">
+                                                <div class="text-sm font-medium">${lesson.title}</div>
+                                                <div class="text-xs text-gray-500">${lesson.type}</div>
+                                            </div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h4 class="font-semibold mb-3">Assignment</h4>
+                                <div class="bg-white p-4 rounded-lg">
+                                    <h5 class="font-medium mb-2">${course.assignment.title}</h5>
+                                    <p class="text-sm text-gray-600 mb-3">${course.assignment.description}</p>
+                                    <div class="text-sm text-gray-600 mb-3">
+                                        <strong>Requirements:</strong>
+                                        <ul class="list-disc list-inside mt-1">
+                                            ${course.assignment.requirements.map(req => `<li>${req}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                    <button onclick="submitAssignment()" class="w-full btn-primary text-white px-4 py-2 rounded-lg">
+                                        Submit Assignment
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center">
+                                <button onclick="showSection('courses')" class="text-indigo-600 hover:text-indigo-800">
+                                    <i class="fas fa-arrow-left mr-2"></i>Back to Courses
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            showSection('courseDetail');
+        }
+
+        function renderLessonContent(lesson) {
+            if (lesson.type === 'video') {
+                return `
+                    <div class="video-container mb-4">
+                        <div class="bg-gray-800 rounded-lg flex items-center justify-center h-64">
+                            <div class="text-white text-center">
+                                <i class="fas fa-play-circle text-4xl mb-2"></i>
+                                <div>Video: ${lesson.title}</div>
+                                <div class="text-sm opacity-75">Click to play</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="prose max-w-none">
+                        <p>${lesson.content}</p>
+                    </div>
+                `;
+            } else {
+                return `
+                    <div class="prose max-w-none">
+                        <h4 class="text-lg font-semibold mb-3">${lesson.title}</h4>
+                        <p>${lesson.content}</p>
+                        <div class="mt-4 p-4 bg-blue-50 rounded-lg">
+                            <h5 class="font-medium text-blue-800">Key Points:</h5>
+                            <ul class="list-disc list-inside text-blue-700 mt-2">
+                                <li>Practice the concepts covered in this lesson</li>
+                                <li>Review the examples and try variations</li>
+                                <li>Complete the exercises at your own pace</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function nextLesson() {
+            if (currentLesson < currentCourse.lessons.length - 1) {
+                currentLesson++;
+                showCourseDetail(currentCourse.id);
+            }
+        }
+
+        function previousLesson() {
+            if (currentLesson > 0) {
+                currentLesson--;
+                showCourseDetail(currentCourse.id);
+            }
+        }
+
+        function goToLesson(lessonIndex) {
+            currentLesson = lessonIndex;
+            showCourseDetail(currentCourse.id);
+        }
+
+        function markLessonComplete() {
+            if (!currentUser) {
+                showNotification('Please login to track progress', 'error');
+                return;
+            }
+            
+            // Update user progress
+            if (!currentUser.progress[currentCourse.id]) {
+                currentUser.progress[currentCourse.id] = {
+                    completedLessons: [],
+                    courseProgress: 0
+                };
+            }
+            
+            const courseProgress = currentUser.progress[currentCourse.id];
+            if (!courseProgress.completedLessons.includes(currentLesson)) {
+                courseProgress.completedLessons.push(currentLesson);
+                courseProgress.courseProgress = (courseProgress.completedLessons.length / currentCourse.lessons.length) * 100;
+                
+                // Update localStorage
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const userIndex = users.findIndex(u => u.id === currentUser.id);
+                if (userIndex !== -1) {
+                    users[userIndex] = currentUser;
+                    localStorage.setItem('users', JSON.stringify(users));
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                }
+                
+                showNotification('Lesson marked as complete!', 'success');
+                
+                // Check if course is completed
+                if (courseProgress.courseProgress === 100) {
+                    if (!currentUser.completedCourses.includes(currentCourse.id)) {
+                        currentUser.completedCourses.push(currentCourse.id);
+                        showNotification('Congratulations! Course completed!', 'success');
+                    }
+                }
+            }
+        }
+
+        function submitAssignment() {
+            if (!currentUser) {
+                showNotification('Please login to submit assignments', 'error');
+                return;
+            }
+            
+            // Simulate assignment submission
+            const assignment = {
+                courseId: currentCourse.id,
+                courseName: currentCourse.title,
+                submittedAt: new Date().toISOString(),
+                status: 'submitted'
+            };
+            
+            // Add to user's assignments
+            if (!currentUser.assignments) {
+                currentUser.assignments = [];
+            }
+            currentUser.assignments.push(assignment);
+            
+            // Generate certificate
+            generateCertificate(currentCourse.id, currentCourse.title);
+            
+            showNotification('Assignment submitted successfully! Certificate generated.', 'success');
+        }
+
+        function generateCertificate(courseId, courseName) {
+            const certificate = {
+                id: Date.now(),
+                courseId,
+                courseName,
+                studentName: currentUser.name,
+                issuedAt: new Date().toISOString(),
+                certificateNumber: `CERT-${Date.now()}`
+            };
+            
+            if (!currentUser.certificates) {
+                currentUser.certificates = [];
+            }
+            currentUser.certificates.push(certificate);
+            
+            // Update localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            if (userIndex !== -1) {
+                users[userIndex] = currentUser;
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            }
+            
+            showCertificateModal(certificate);
+        }
+
+        function showCertificateModal(certificate) {
+            const modal = document.getElementById('certificateModal');
+            const content = document.getElementById('certificateContent');
+            
+            content.innerHTML = `
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-indigo-600 mb-4">Certificate of Completion</div>
+                    <div class="text-lg mb-6">This is to certify that</div>
+                    <div class="text-3xl font-bold text-gray-800 mb-6">${certificate.studentName}</div>
+                    <div class="text-lg mb-6">has successfully completed the course</div>
+                    <div class="text-2xl font-semibold text-indigo-600 mb-8">${certificate.courseName}</div>
+                    <div class="flex justify-between items-center">
+                        <div class="text-left">
+                            <div class="text-sm text-gray-600">Date: ${new Date(certificate.issuedAt).toLocaleDateString()}</div>
+                            <div class="text-sm text-gray-600">Certificate No: ${certificate.certificateNumber}</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-lg font-semibold">DevLearn Pro</div>
+                            <div class="text-sm text-gray-600">Learning Platform</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function hideCertificateModal() {
+            const modal = document.getElementById('certificateModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function downloadCertificate() {
+            // Simulate certificate download
+            const link = document.createElement('a');
+            link.href = '#';
+            link.download = `certificate-${Date.now()}.pdf`;
+            link.click();
+            showNotification('Certificate downloaded!', 'success');
+        }
+
+        // Dashboard functions
+        function loadDashboard() {
+            const dashboardUserName = document.getElementById('dashboardUserName');
+            const totalProgress = document.getElementById('totalProgress');
+            const enrolledCourses = document.getElementById('enrolledCourses');
+            const userCertificates = document.getElementById('userCertificates');
+            
+            dashboardUserName.textContent = currentUser.name;
+            
+            // Calculate overall progress
+            const completedCourses = currentUser.completedCourses ? currentUser.completedCourses.length : 0;
+            const totalCourses = courses.length;
+            const overallProgress = Math.round((completedCourses / totalCourses) * 100);
+            totalProgress.textContent = `${overallProgress}%`;
+            
+            // Render enrolled courses
+            enrolledCourses.innerHTML = '';
+            courses.forEach(course => {
+                const progress = currentUser.progress && currentUser.progress[course.id] ? currentUser.progress[course.id].courseProgress : 0;
+                const isCompleted = currentUser.completedCourses && currentUser.completedCourses.includes(course.id);
+                
+                const courseCard = document.createElement('div');
+                courseCard.className = 'bg-gray-50 p-4 rounded-lg';
+                courseCard.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-${course.color}-100 rounded-lg flex items-center justify-center">
+                                <i class="${course.icon} text-${course.color}-600"></i>
+                            </div>
+                            <div>
+                                <div class="font-medium">${course.title}</div>
+                                <div class="text-sm text-gray-600">${progress}% complete</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            ${isCompleted ? '<i class="fas fa-check-circle text-green-500"></i>' : ''}
+                            <button onclick="showCourseDetail(${course.id})" class="text-indigo-600 hover:text-indigo-800">
+                                <i class="fas fa-play"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="bg-gray-200 rounded-full h-2">
+                            <div class="progress-bar h-2 rounded-full" style="width: ${progress}%"></div>
+                        </div>
+                    </div>
+                `;
+                enrolledCourses.appendChild(courseCard);
+            });
+            
+            // Render certificates
+            userCertificates.innerHTML = '';
+            if (currentUser.certificates && currentUser.certificates.length > 0) {
+                currentUser.certificates.forEach(cert => {
+                    const certCard = document.createElement('div');
+                    certCard.className = 'bg-white p-4 rounded-lg shadow card-hover cursor-pointer';
+                    certCard.onclick = () => showCertificateModal(cert);
+                    certCard.innerHTML = `
+                        <div class="text-center">
+                            <i class="fas fa-certificate text-yellow-500 text-2xl mb-2"></i>
+                            <div class="font-medium">${cert.courseName}</div>
+                            <div class="text-sm text-gray-600">${new Date(cert.issuedAt).toLocaleDateString()}</div>
+                        </div>
+                    `;
+                    userCertificates.appendChild(certCard);
+                });
+            } else {
+                userCertificates.innerHTML = '<div class="text-center text-gray-500 py-8">No certificates yet. Complete a course to earn your first certificate!</div>';
+            }
+            
+            // Load progress chart
+            loadProgressChart();
+        }
+
+        function loadProgressChart() {
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            
+            if (progressChart) {
+                progressChart.destroy();
+            }
+            
+            const courseNames = courses.map(course => course.title);
+            const progressData = courses.map(course => {
+                return currentUser.progress && currentUser.progress[course.id] ? currentUser.progress[course.id].courseProgress : 0;
+            });
+            
+            progressChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: courseNames,
+                    datasets: [{
+                        label: 'Course Progress (%)',
+                        data: progressData,
+                        backgroundColor: [
+                            'rgba(251, 146, 60, 0.8)',
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(245, 158, 11, 0.8)',
+                            'rgba(6, 182, 212, 0.8)',
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(34, 197, 94, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(251, 146, 60, 1)',
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(6, 182, 212, 1)',
+                            'rgba(34, 197, 94, 1)',
+                            'rgba(34, 197, 94, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+
+        // Internship functions
+        function renderInternships() {
+            const internshipGrid = document.getElementById('internshipGrid');
+            internshipGrid.innerHTML = '';
+            
+            internships.forEach(internship => {
+                const internshipCard = document.createElement('div');
+                internshipCard.className = 'bg-white rounded-xl shadow-lg p-6 card-hover';
+                
+                internshipCard.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-semibold">${internship.title}</h3>
+                        <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">${internship.type}</span>
+                    </div>
+                    <div class="mb-4">
+                        <div class="text-gray-600 mb-2">
+                            <i class="fas fa-building mr-2"></i>${internship.company}
+                        </div>
+                        <div class="text-gray-600 mb-2">
+                            <i class="fas fa-clock mr-2"></i>${internship.duration}
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-4">${internship.description}</p>
+                    <div class="mb-4">
+                        <div class="text-sm font-medium mb-2">Requirements:</div>
+                        <div class="flex flex-wrap gap-1">
+                            ${internship.requirements.map(req => `<span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">${req}</span>`).join('')}
+                        </div>
+                    </div>
+                    <button onclick="applyForInternship(${internship.id})" class="w-full btn-primary text-white px-4 py-2 rounded-lg">
+                        Apply Now
+                    </button>
+                `;
+                
+                internshipGrid.appendChild(internshipCard);
+            });
+        }
+
+        function checkInternshipEligibility() {
+            const eligibilityNotice = document.getElementById('internshipEligibility');
+            
+            if (!currentUser) {
+                eligibilityNotice.classList.remove('hidden');
+                eligibilityNotice.innerHTML = `
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-info-circle text-blue-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-blue-700">
+                                Please login to apply for internships.
+                            </p>
+                        </div>
+                    </div>
+                `;
+            } else if (!currentUser.completedCourses || currentUser.completedCourses.length === 0) {
+                eligibilityNotice.classList.remove('hidden');
+            } else {
+                eligibilityNotice.classList.add('hidden');
+            }
+        }
+
+        function applyForInternship(internshipId) {
+            if (!currentUser) {
+                showNotification('Please login to apply for internships', 'error');
+                return;
+            }
+            
+            if (!currentUser.completedCourses || currentUser.completedCourses.length === 0) {
+                showNotification('Complete at least one course to apply for internships', 'error');
+                return;
+            }
+            
+            const internship = internships.find(i => i.id === internshipId);
+            if (!internship) return;
+            
+            // Check if already applied
+            if (currentUser.internshipApplications && currentUser.internshipApplications.some(app => app.internshipId === internshipId)) {
+                showNotification('You have already applied for this internship', 'info');
+                return;
+            }
+            
+            // Add application
+            const application = {
+                internshipId,
+                internshipTitle: internship.title,
+                company: internship.company,
+                appliedAt: new Date().toISOString(),
+                status: 'pending'
+            };
+            
+            if (!currentUser.internshipApplications) {
+                currentUser.internshipApplications = [];
+            }
+            currentUser.internshipApplications.push(application);
+            
+            // Update localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            if (userIndex !== -1) {
+                users[userIndex] = currentUser;
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            }
+            
+            showNotification('Application submitted successfully!', 'success');
+        }
+
+        // Profile functions
+        function loadProfile() {
+            const profileName = document.getElementById('profileName');
+            const profileEmail = document.getElementById('profileEmail');
+            const profilePhone = document.getElementById('profilePhone');
+            const profileBio = document.getElementById('profileBio');
+            const completedCoursesCount = document.getElementById('completedCoursesCount');
+            const certificatesCount = document.getElementById('certificatesCount');
+            const internshipApplicationsCount = document.getElementById('internshipApplicationsCount');
+            
+            profileName.value = currentUser.name || '';
+            profileEmail.value = currentUser.email || '';
+            profilePhone.value = currentUser.phone || '';
+            profileBio.value = currentUser.bio || '';
+            
+            completedCoursesCount.textContent = currentUser.completedCourses ? currentUser.completedCourses.length : 0;
+            certificatesCount.textContent = currentUser.certificates ? currentUser.certificates.length : 0;
+            internshipApplicationsCount.textContent = currentUser.internshipApplications ? currentUser.internshipApplications.length : 0;
+        }
+
+        function handleProfileUpdate(e) {
+            e.preventDefault();
+            
+            currentUser.name = document.getElementById('profileName').value;
+            currentUser.email = document.getElementById('profileEmail').value;
+            currentUser.phone = document.getElementById('profilePhone').value;
+            currentUser.bio = document.getElementById('profileBio').value;
+            
+            // Update localStorage
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            if (userIndex !== -1) {
+                users[userIndex] = currentUser;
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            }
+            
+            updateAuthUI();
+            showNotification('Profile updated successfully!', 'success');
+        }
+
+        // Admin functions
+        function loadAdminPanel() {
+            showAdminTab('users');
+        }
+
+        function showAdminTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.classList.remove('active', 'border-b-2', 'border-indigo-500', 'text-indigo-600');
+                btn.classList.add('text-gray-500', 'hover:text-gray-700');
+            });
+            
+            const activeTab = document.querySelector(`[onclick="showAdminTab('${tabName}')"]`);
+            if (activeTab) {
+                activeTab.classList.add('active', 'border-b-2', 'border-indigo-500', 'text-indigo-600');
+                activeTab.classList.remove('text-gray-500', 'hover:text-gray-700');
+            }
+            
+            // Load tab content
+            const adminContent = document.getElementById('adminContent');
+            
+            switch (tabName) {
+                case 'users':
+                    loadAdminUsers();
+                    break;
+                case 'courses':
+                    loadAdminCourses();
+                    break;
+                case 'assignments':
+                    loadAdminAssignments();
+                    break;
+                case 'certificates':
+                    loadAdminCertificates();
+                    break;
+                case 'internships':
+                    loadAdminInternships();
+                    break;
+            }
+        }
+
+        function loadAdminUsers() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const adminContent = document.getElementById('adminContent');
+            
+            adminContent.innerHTML = `
+                <h3 class="text-xl font-semibold mb-4">User Management</h3>
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Completed Courses</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                ${users.map(user => `
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${user.name}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${user.email}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${user.role}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${user.completedCourses ? user.completedCourses.length : 0}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <button onclick="deleteUser(${user.id})" class="text-red-600 hover:text-red-900">Delete</button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadAdminCourses() {
+            const adminContent = document.getElementById('adminContent');
+            
+            adminContent.innerHTML = `
+                <h3 class="text-xl font-semibold mb-4">Course Management</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    ${courses.map(course => `
+                        <div class="bg-white rounded-lg shadow p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="w-10 h-10 bg-${course.color}-100 rounded-lg flex items-center justify-center">
+                                    <i class="${course.icon} text-${course.color}-600"></i>
+                                </div>
+                                <span class="text-sm text-gray-500">${course.level}</span>
+                            </div>
+                            <h4 class="text-lg font-semibold mb-2">${course.title}</h4>
+                            <p class="text-gray-600 text-sm mb-4">${course.description}</p>
+                            <div class="flex items-center justify-between text-sm text-gray-500">
+                                <span>${course.duration}</span>
+                                <span>${course.lessons.length} lessons</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function loadAdminAssignments() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const allAssignments = [];
+            
+            users.forEach(user => {
+                if (user.assignments) {
+                    user.assignments.forEach(assignment => {
+                        allAssignments.push({
+                            ...assignment,
+                            studentName: user.name,
+                            studentEmail: user.email
+                        });
+                    });
+                }
+            });
+            
+            const adminContent = document.getElementById('adminContent');
+            
+            adminContent.innerHTML = `
+                <h3 class="text-xl font-semibold mb-4">Assignment Submissions</h3>
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Course</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Submitted</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                ${allAssignments.map(assignment => `
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${assignment.studentName}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${assignment.courseName}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(assignment.submittedAt).toLocaleDateString()}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">${assignment.status}</span>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadAdminCertificates() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const allCertificates = [];
+            
+            users.forEach(user => {
+                if (user.certificates) {
+                    user.certificates.forEach(certificate => {
+                        allCertificates.push({
+                            ...certificate,
+                            studentName: user.name,
+                            studentEmail: user.email
+                        });
+                    });
+                }
+            });
+            
+            const adminContent = document.getElementById('adminContent');
+            
+            adminContent.innerHTML = `
+                <h3 class="text-xl font-semibold mb-4">Certificates Issued</h3>
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Course</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Certificate #</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Issued</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                ${allCertificates.map(certificate => `
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${certificate.studentName}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${certificate.courseName}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${certificate.certificateNumber}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(certificate.issuedAt).toLocaleDateString()}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadAdminInternships() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const allApplications = [];
+            
+            users.forEach(user => {
+                if (user.internshipApplications) {
+                    user.internshipApplications.forEach(application => {
+                        allApplications.push({
+                            ...application,
+                            studentName: user.name,
+                            studentEmail: user.email
+                        });
+                    });
+                }
+            });
+            
+            const adminContent = document.getElementById('adminContent');
+            
+            adminContent.innerHTML = `
+                <h3 class="text-xl font-semibold mb-4">Internship Applications</h3>
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Internship</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applied</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                ${allApplications.map(application => `
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${application.studentName}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${application.internshipTitle}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${application.company}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(application.appliedAt).toLocaleDateString()}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">${application.status}</span>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function deleteUser(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const updatedUsers = users.filter(user => user.id !== userId);
+                localStorage.setItem('users', JSON.stringify(updatedUsers));
+                loadAdminUsers();
+                showNotification('User deleted successfully', 'success');
+            }
+        }
+
+        // Modal functions
+        function showLoginModal() {
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('loginModal').classList.add('flex');
+        }
+
+        function hideLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('loginModal').classList.remove('flex');
+        }
+
+        function showSignupModal() {
+            document.getElementById('signupModal').classList.remove('hidden');
+            document.getElementById('signupModal').classList.add('flex');
+        }
+
+        function hideSignupModal() {
+            document.getElementById('signupModal').classList.add('hidden');
+            document.getElementById('signupModal').classList.remove('flex');
+        }
+
+        // Utility functions
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg transform transition-all duration-300 ${
+                type === 'success' ? 'bg-green-500 text-white' : 
+                type === 'error' ? 'bg-red-500 text-white' : 
+                type === 'info' ? 'bg-blue-500 text-white' : 'bg-gray-500 text-white'
+            }`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Initialize with sample admin user
+        function initializeSampleData() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Create admin user if it doesn't exist
+            if (!users.find(u => u.email === 'admin@devlearn.com')) {
+                const adminUser = {
+                    id: 1,
+                    name: 'Admin User',
+                    email: 'admin@devlearn.com',
+                    password: 'admin123',
+                    role: 'admin',
+                    enrolledCourses: [],
+                    completedCourses: [],
+                    certificates: [],
+                    progress: {},
+                    internshipApplications: []
+                };
+                
+                users.push(adminUser);
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+        }
+
+        // Initialize sample data on first load
+        initializeSampleData();
+    </script>
+</body>
+</html>
